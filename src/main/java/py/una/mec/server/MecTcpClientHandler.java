@@ -22,6 +22,7 @@ public class MecTcpClientHandler extends Thread {
     public void run() {
         try (BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              PrintWriter salida = new PrintWriter(socket.getOutputStream(), true)) {
+            // FPUNA consume este saludo inicial antes de enviar su reporte.
             salida.println(MensajeOperacionJSON.serializar(new MensajeOperacion(
                 "BIENVENIDA", "-", "Conectado al MEC")));
 
@@ -34,6 +35,7 @@ public class MecTcpClientHandler extends Thread {
                 if ("CONSULTA_EGRESADOS".equals(solicitud.getTipoOperacion())) {
                     respuesta = "Consulta de egresados procesada";
                 }
+                // Conserva el identificador para relacionar la respuesta con la solicitud.
                 salida.println(MensajeOperacionJSON.serializar(new MensajeOperacion(
                     "RESPUESTA_" + solicitud.getTipoOperacion(),
                     solicitud.getIdSolicitud(), respuesta)));
