@@ -1,0 +1,5 @@
+db.url=jdbc:postgresql://localhost:5432/mec_db
+db.user=postgres
+db.password=postgres
+tcp.port=4444
+udp.port=9876

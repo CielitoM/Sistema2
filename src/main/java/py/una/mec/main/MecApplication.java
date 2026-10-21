@@ -2,6 +2,8 @@ package py.una.mec.main;
 
 import py.una.mec.server.MecTcpServer;
 import py.una.mec.server.MecUdpServer;
+import py.una.mec.ui.MenuMec;
+import py.una.mec.util.LogUtil;
 
 public class MecApplication {
     public static void main(String[] args) {
@@ -11,6 +13,8 @@ public class MecApplication {
         Thread udpThread = new Thread(udpServer, "MEC-UDP");
         tcpThread.start();
         udpThread.start();
+        Thread menuThread = new Thread(new MenuMec(), "MEC-ADMIN");
+        menuThread.start();
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             @Override
             public void run() {
@@ -18,6 +22,6 @@ public class MecApplication {
                 udpServer.detener();
             }
         }));
-        System.out.println("MEC listo: TCP 4444 y UDP 9876");
+        LogUtil.get(MecApplication.class).info("MEC listo: TCP 4444 y UDP 9876");
     }
 }

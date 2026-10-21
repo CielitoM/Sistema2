@@ -6,8 +6,10 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import py.una.mec.util.LogUtil;
 
 public class MecTcpServer implements Runnable {
+    private static final java.util.logging.Logger LOG = LogUtil.get(MecTcpServer.class);
     public static final int PUERTO = 4444;
     private volatile boolean escuchando = true;
     private ServerSocket serverSocket;
@@ -19,7 +21,7 @@ public class MecTcpServer implements Runnable {
         try {
             serverSocket = new ServerSocket(PUERTO);
             serverSocket.setSoTimeout(1000);
-            System.out.println("MEC TCP escuchando en el puerto " + PUERTO);
+            LOG.info("MEC TCP escuchando en el puerto " + PUERTO);
             while (escuchando) {
                 try {
                     Socket socket = serverSocket.accept();
@@ -32,7 +34,7 @@ public class MecTcpServer implements Runnable {
             }
         } catch (IOException e) {
             if (escuchando) {
-                System.err.println("Error en servidor TCP MEC: " + e.getMessage());
+                LOG.warning("Error en servidor TCP MEC: " + e.getMessage());
             }
         } finally {
             cerrarSocketServidor();
